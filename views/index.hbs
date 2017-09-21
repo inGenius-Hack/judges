@@ -1,0 +1,116 @@
+
+<div class="col-md-6 col-md-offset-3 text-center" id="logo-area">
+    <center>
+        <img class="img img-responsive" style="max-height:180px;" src="/images/logo.png">
+    </center>
+</div>
+
+
+<div class="row selection-row" style="margin-top : 50px;">
+        <center>
+        <div class="col-xs-12">
+            <select class="test-select" id="rooms">
+                <option value = "all" selected>Room</option>
+                {{#each team_data}}
+                    <option value="{{room_no}}"> {{room_no}} </option>
+                {{else}}
+                    <option value="0">No data</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <select class="test-select" id="table_id">
+                <option value = "all" selected>Table ID</option>
+                {{#each team_data}}
+                    <option value="{{table_id}}"> {{table_id}} </option>
+                {{else}}
+                    <option value="0">No data</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <select class="test-select" id="teams">
+                <option value = "all" selected>Team</option>
+                {{#each team_data}}
+                    <option value="{{team_name}}"> {{team_name}} </option>
+                {{else}}
+                    <option value="0">No data</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <select class="test-select" id="judges">
+                <option value = "all" selected>Judge</option>
+                {{#each judge_data}}
+                    <option value="{{names}}"> {{names}} </option>
+                {{else}}
+                    <option value="0">No data</option>
+                {{/each}}
+            </select>
+        </div>
+    </center>
+</div>
+
+<script type="text/javascript"></script>
+<script type="text/javascript" src="/javascripts/select2.full.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+        var socket = io();
+
+        $(".test-select").select2({
+            theme:"bootstrap"
+        });
+        $(".test-select>option").css("textTransform", "capitalize");
+
+
+        $(".test-select").on("change", function(e){
+            var filterSearch = {};
+            filterSearch.rooms = $("#rooms").val();
+            filterSearch.table_id = $("#table_id").val();
+            filterSearch.teams = $("#teams").val();
+            console.log(filterSearch.rooms);
+            console.log("here");
+            socket.emit('filterSearch_request', filterSearch);
+            console.log("emmited");
+        });
+
+        socket.on('filterSearch_response', function(filterResult){
+            console.log("responded");
+            console.log(filterResult);
+            // articleData = filterResult.article_data;
+
+            var select2TeamVal = $("#teams").val();
+
+            var select2TeamList= '<option value="all">All Teams</option>';
+            $.each(filterResult, function(i, item){
+                select2TeamList += '<option value="'+item.team_name+'"';
+                select2TeamList += (item.team_name == select2TeamVal)?'selected':' ';
+                select2TeamList += '>'+item.team_name+'</option>';
+            });
+
+            $("#teams").html(" ").promise().done(function(){
+                $("#teams").html(select2TeamList);
+            });
+
+            var select2TableVal= $("#table_id").val();
+            var select2TableList= '<option value="all">All Tables</option>';
+            $.each(filterResult, function(i, item){
+                select2TableList += '<option value="'+item.table_id+'"';
+                select2TableList += (item.table_id == select2TableVal)?'selected':' ';
+                select2TableList += '>'+item.table_id+'</option>';
+            });
+
+            $("#table_id").html(" ").promise().done(function(){
+                $("#table_id").html(select2TableList);
+            });
+
+            $(".test-select").css("textTransform", "capitalize");
+        });
+
+
+    });
+
+</script>
