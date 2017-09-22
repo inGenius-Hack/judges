@@ -11,7 +11,7 @@ module.exports = function(io){
 		connection = mysql.createConnection({
 								host:'localhost',
 								user : 'root',
-								password : 'p@t@n@hi',
+								password : '',
 								database : 'judges'
 							});
 			 
@@ -87,7 +87,7 @@ module.exports = function(io){
 			connection.query({
 				sql : 'select * from judges'
 			}, function(err, j, f){
-				if(err) throw err;
+				if(err) console.log(err);
 				res.render('index', { title: 'Express', team_data : r, judge_data : j });
 			});
 

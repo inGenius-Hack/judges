@@ -12,8 +12,9 @@
     "express": "~4.13.4",
     "hbs": "~4.0.0",
     "morgan": "~1.7.0",
+    "mysql": "^2.14.1",
+    "papaparse": "latest",
     "serve-favicon": "~2.3.0",
-    "mysql" : "latest",
-    "papaparse" : "latest"
+    "socket.io": "^2.0.3"
   }
 }
