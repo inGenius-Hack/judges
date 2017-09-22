@@ -48,16 +48,87 @@
                 {{/each}}
             </select>
         </div>
+
+        <div class="col-xs-12" style="margin-top: 40px !important"> 
+            <span class="range-param" style="font-size: 24px; color:#fff; letter-spacing: 2px; margin-bottom:20px !important">Originality</span>
+            <input type="range" class="range-slider" id="1" min="0" max="5" step="1" value="0" data-orientation="horizontal">
+            <span class="range-output" id="range-output-1" style="font-size: 24px; color:#fff; letter-spacing: 2px;">0</span>
+        </div>
+
+        <div class="col-xs-12" style="margin-top: 40px !important"> 
+            <span class="range-param" style="font-size: 24px; color:#fff; letter-spacing: 2px; margin-bottom:20px !important">Param 2</span>
+            <input type="range" class="range-slider" id="2" min="0" max="10" step="1" value="0" data-orientation="horizontal">
+            <span class="range-output" id="range-output-2" style="font-size: 24px; color:#fff; letter-spacing: 2px;">0</span>
+        </div>
+
+        <div class="col-xs-12" style="margin-top: 40px !important"> 
+            <span class="range-param" style="font-size: 24px; color:#fff; letter-spacing: 2px; margin-bottom:20px !important">Param 3</span>
+            <input type="range" class="range-slider" id="3" min="0" max="5" step="1" value="0" data-orientation="horizontal">
+            <span class="range-output" id="range-output-3" style="font-size: 24px; color:#fff; letter-spacing: 2px;">0</span>
+        </div>
+
+        <div class="col-xs-12" style="margin-top: 40px !important"> 
+            <span class="range-param" style="font-size: 24px; color:#fff; letter-spacing: 2px; margin-bottom:20px !important">Param 4</span>
+            <input type="range" class="range-slider" id="4" min="0" max="10" step="1" value="0" data-orientation="horizontal">
+            <span class="range-output" id="range-output-4" style="font-size: 24px; color:#fff; letter-spacing: 2px;">0</span>
+        </div>
+
+        <div class="col-xs-12" style="margin-top: 40px !important"> 
+            <span class="range-param" style="font-size: 24px; color:#fff; letter-spacing: 2px; margin-bottom:20px !important">Param 5</span>
+            <input type="range" class="range-slider" id="5" min="0" max="10" step="1" value="0" data-orientation="horizontal">
+            <span class="range-output" id="range-output-5" style="font-size: 24px; color:#fff; letter-spacing: 2px;">0</span>
+        </div>
+
+
+
+
     </center>
 </div>
 
 <script type="text/javascript"></script>
 <script type="text/javascript" src="/javascripts/select2.full.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/javascripts/rangeslider.min.js"></script>
+
 
 <script type="text/javascript">
     
+    
+
     $(document).ready(function(){
+
+        $('.range-slider').rangeslider({
+
+            // Feature detection the default is `true`.
+            // Set this to `false` if you want to use
+            // the polyfill also in Browsers which support
+            // the native <input type="range"> element.
+            polyfill: false,
+
+            // Default CSS classes
+            rangeClass: 'rangeslider',
+            disabledClass: 'rangeslider--disabled',
+            horizontalClass: 'rangeslider--horizontal',
+            verticalClass: 'rangeslider--vertical',
+            fillClass: 'rangeslider__fill',
+            handleClass: 'rangeslider__handle',
+
+            // Callback function
+            onInit : function() {
+                // this.output = $(".range-output");
+                console.log($(this).attr("id"));
+            },
+            onSlide : function( position, value ) {
+
+                $(".range-output").html( value );
+            },
+            // Callback function
+            onSlideEnd: function(position, value) {
+                console.log($(this).attr("id"));
+            }
+        });
+
+
         var socket = io();
 
         $(".test-select").select2({
